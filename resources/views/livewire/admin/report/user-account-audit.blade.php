@@ -235,6 +235,18 @@
                         <div class="card">
                             <div class="card-body shadow-lg p-1">
                                 <div style="height: 65vh;overflow-y: auto; padding: 10px">
+                                    @if ($selected_menu == 1)
+                                        <div class="card">
+                                            <div class="card-body shadow-lg">
+                                                <div id="entryDebitCreditPieChart"></div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body shadow-lg">
+                                                <div id="entryLedgerAccountPolarChart"></div>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div id="filters">
                                         <label>Ledger</label> <br>
                                         <select wire:model.debounce.800ms="ledger_id" class="form-control">
@@ -287,10 +299,14 @@
                                         <select wire:model="journal_id" id="journals" class="form-control">
                                             <option value="">Select ...</option>
                                             @if ($journals->count() > 0)
-                                                @foreach ($journals as $journal)
-                                                    <option value="{{ $journal->id }}">
-                                                        #{{ $journal->bill_no }}
-                                                    </option>
+                                                @foreach ($journals->groupBy(fn($e) => !is_null($e->journalable_type) ? class_basename($e->journalable_type) : 'Independent') as $journalable_class => $journalables)
+                                                    <optgroup label="{{ $journalable_class }}">
+                                                        @foreach ($journalables as $journal)
+                                                            <option value="{{ $journal->id }}">
+                                                                {{ !is_null($journal->journalable) ? $journal->journalable->representing_name() : '#' . $journal->id }}
+                                                            </option>
+                                                        @endforeach
+                                                    </optgroup>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -477,6 +493,72 @@
                     $('#interval').on('cancel.daterangepicker', function(ev, picker) {
                         $(this).val('');
                     });
+                });
+                window.addEventListener('user_entries_chart', event => {
+                    $('#entryDebitCreditPieChart').empty();
+                    var data = event.detail;
+                    var debit = data.debit;
+                    var credit = data.credit;
+                    var entryDebitCreditPieChartOption = {
+                        series: [debit, credit],
+                        chart: {
+                            width: 380,
+                            type: 'pie',
+                        },
+                        labels: ['Debit', 'Credit'],
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    };
+
+                    var entryDebitCreditPieChart = new ApexCharts(document.querySelector(
+                        "#entryDebitCreditPieChart"), entryDebitCreditPieChartOption);
+                    entryDebitCreditPieChart.render();
+
+                    $('#entryLedgerAccountPolarChart').empty();
+                    var accounts = [];
+                    var account_balance = [];
+                    Object.keys(data.account_balance).forEach(function(account) {
+                        accounts.push(account);
+                        account_balance.push(data.account_balance[account].balance);
+                    });
+                    var entryLedgerAccountPolarChartOption = {
+                        series: account_balance,
+                        labels: accounts,
+                        chart: {
+                            type: 'polarArea',
+                        },
+                        stroke: {
+                            colors: ['#fff']
+                        },
+                        fill: {
+                            opacity: 0.8
+                        },
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    };
+
+                    var entryLedgerAccountPolarChart = new ApexCharts(document.querySelector(
+                        "#entryLedgerAccountPolarChart"), entryLedgerAccountPolarChartOption);
+                    entryLedgerAccountPolarChart.render();
+
                 });
             });
         </script>

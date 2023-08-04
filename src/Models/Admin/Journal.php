@@ -86,13 +86,14 @@ class Journal extends Model
     // Accessors
     public function getStatusAttribute($attributes)
     {
-        return in_array($attributes, [self::REJECTED, self::ACCEPTED, self::PENDING])
-            ? [
-                self::REJECTED => 'Rejected',
-                self::ACCEPTED => 'Accepted',
-                self::PENDING => 'Pending',
-            ][$attributes]
-            : null;
+        return !empty($attribute) ?
+            (in_array($attributes, [self::REJECTED, self::ACCEPTED, self::PENDING])
+                ? [
+                    self::REJECTED => 'Rejected',
+                    self::ACCEPTED => 'Accepted',
+                    self::PENDING => 'Pending',
+                ][$attributes]
+                : null) : null;
     }
     public function getInfoAttribute()
     {

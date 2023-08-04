@@ -67,7 +67,14 @@ class UserAccountAudit extends Component
 
     public function mount()
     {
-        $this->users = Cache::get('users', User::latest()->get());
+        $this->users = User::find(array_unique(
+            array_merge(
+                array_unique(Entry::all()->pluck('issued_by')->toArray()),
+                array_unique(Entry::all()->pluck('approved_by')->toArray()),
+                array_unique(Transaction::all()->pluck('issued_by')->toArray()),
+                array_unique(Transaction::all()->pluck('approved_by')->toArray()),
+            )
+        ));
         $this->ledgers = Cache::get('ledgers', Ledger::latest()->get());
         $this->journals = Cache::get('journals', Journal::latest()->get());
     }
@@ -150,6 +157,21 @@ class UserAccountAudit extends Component
 
                 // Date Wise Entries
                 $data = $this->getDateWiseEntries($data);
+
+                $this->dispatchBrowserEvent('user_entries_chart', [
+                    'credit' => with(clone $data->get())->filter(fn ($e) => $e->account_type == CREDIT())->sum('amount'),
+                    'debit' => with(clone $data->get())->filter(fn ($e) => $e->account_type == DEBIT())->sum('amount'),
+                    'account_balance' =>
+                    with(clone $data->get())->groupBy(fn ($d) => $d->ledger_account)->map(function ($d) {
+                        $debit = $d->filter(fn ($e) => $e->account_type == DEBIT())->sum('amount');
+                        $credit = $d->filter(fn ($e) => $e->account_type == CREDIT())->sum('amount');
+                        return [
+                            "debit" => number_format((float)$debit, 2, ".", ""),
+                            "credit" => number_format((float)$debit, 2, ".", ""),
+                            "balance" => number_format((float)$credit - $debit, 2, ".", ""),
+                        ];
+                    }),
+                ]);
 
                 return $data->paginate($this->limit);
             }

@@ -265,6 +265,11 @@
                             <div class="card">
                                 <div class="card-body shadow-lg p-1">
                                     <div style="height: 65vh;overflow-y: auto; padding: 10px">
+                                        <div class="card">
+                                            <div class="card-body shadow-lg p-1">
+                                                <div id="chart-of-account-pie-chart"></div>
+                                            </div>
+                                        </div>
                                         <div id="filters p-2">
                                             <div class="card">
                                                 <div class="card-body shadow-lg bg-success">
@@ -367,6 +372,48 @@
                                 $(this).val('');
                             });
                         }
+
+                        window.addEventListener('chart_of_account_pie_chart', event => {
+                            $('#chart-of-account-pie-chart').empty();
+                            var account = [];
+                            var balance = [];
+                            var data = event.detail;
+                            Object.keys(data).forEach(function(d) {
+                                account.push(data[d]['name']);
+                                balance.push(data[d]['balance']);
+                            });
+                            var chartOfAccountPieChartOptions = options = {
+                                series: balance,
+                                labels: account,
+                                chart: {
+                                    type: 'polarArea',
+                                },
+                                stroke: {
+                                    colors: ['#fff']
+                                },
+                                fill: {
+                                    opacity: 0.8
+                                },
+                                responsive: [{
+                                    breakpoint: 480,
+                                    options: {
+                                        chart: {
+                                            width: 200
+                                        },
+                                        legend: {
+                                            position: 'bottom'
+                                        }
+                                    }
+                                }]
+                            };
+
+                            var chartOfAccountPieChart = new ApexCharts(
+                                document.querySelector("#chart-of-account-pie-chart"),
+                                chartOfAccountPieChartOptions
+                            );
+
+                            chartOfAccountPieChart.render();
+                        })
                     });
                 </script>
             @endpush

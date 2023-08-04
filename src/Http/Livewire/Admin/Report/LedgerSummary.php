@@ -5,10 +5,11 @@ namespace Adminetic\Account\Http\Livewire\Admin\Report;
 use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
+use Illuminate\Support\Facades\Cache;
 use Adminetic\Account\Models\Admin\Entry;
 use Adminetic\Account\Models\Admin\Ledger;
 use Adminetic\Account\Models\Admin\Journal;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Collection;
 
 class LedgerSummary extends Component
 {
@@ -43,6 +44,21 @@ class LedgerSummary extends Component
     public function updated()
     {
         $this->getEntries();
+        if (!is_null($this->entries)) {
+            if ($this->entries->count() > 0) {
+                $data = [];
+                $balance = ($this->entries->first()->account_type == CREDIT() ? $this->entries->first()->balance() - $this->entries->first()->amount : $this->entries->first()->balance() + $this->entries->first()->amount);
+                foreach ($this->entries as $entry) {
+                    if ($entry->account_type == CREDIT()) {
+                        $balance = $balance + $entry->amount;
+                    } elseif ($entry->account_type == DEBIT()) {
+                        $balance = $balance - $entry->amount;
+                    }
+                    $data[] = number_format((float)$balance, 2, '.', '');
+                }
+                $this->dispatchBrowserEvent('entry_sparklines_chart', $data);
+            }
+        }
     }
     public function dateRangeFilter($start_date, $end_date)
     {

@@ -29,6 +29,7 @@ Route::view('entities-ledger-accounts', 'account::admin.entities.ledger_accounts
 Route::view('chart-of-account', 'account::admin.report.chart_of_account')->name('admin.report.chart_of_account');
 Route::view('ledger-summary', 'account::admin.report.ledger_summary')->name('admin.report.ledger_summary');
 Route::view('transaction-report', 'account::admin.report.transaction_report')->name('admin.report.transaction_report');
+Route::view('balance-report', 'account::admin.report.balance_report')->name('admin.report.balance_report');
 Route::view('user-account-audit', 'account::admin.report.user_account_audit')->name('admin.report.user_account_audit');
 Route::view('profit-loss-report', 'account::admin.report.profit_loss_report')->name('admin.report.profit_loss_report');
 Route::view('cumulative-balance-report', 'account::admin.report.cumulative_balance_report')->name('admin.report.cumulative_balance_report');

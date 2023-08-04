@@ -22,7 +22,7 @@ class JournalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fiscal_id' => 'required|exists:fiscals,id',
+            'fiscal_id' => 'required|exists:' . config('account.table_prefix', 'account') . '_fiscals,id',
             'issued_date' => 'required',
             'status' => 'sometimes|numeric',
             'bill_no' => 'required',

@@ -47,6 +47,7 @@ class ChartOfAccount extends Component
     public function initializeChartOfAccount()
     {
         $this->emit('initializeChartOfAccount');
+        $this->dispatchBrowserEvent('chart_of_account_pie_chart', $this->ledger_account_wise_data);
     }
     public function render()
     {
@@ -66,6 +67,7 @@ class ChartOfAccount extends Component
         $this->balance = $this->credit_total - $this->debit_total;
 
         $this->ledger_account_wise_data = ledger_account_wise_data($data);
+
 
         $this->initializeChartOfAccount();
     }

@@ -198,6 +198,12 @@ class AccountAdapter implements PluginInterface
             ],
             [
                 'type' => 'link',
+                'icon' => 'fa fa-search-dollar',
+                'name' => 'Balance Report',
+                'link' => route('admin.report.balance_report'),
+            ],
+            [
+                'type' => 'link',
                 'icon' => 'fa fa-user-cog',
                 'name' => 'User Account Audit',
                 'link' => route('admin.report.user_account_audit'),

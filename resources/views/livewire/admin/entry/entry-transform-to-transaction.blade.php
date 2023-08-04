@@ -1,5 +1,6 @@
 <div>
     <button type="button"
+        title="{{ $entry->account_type == CREDIT() ? 'Credit' : ($entry->account_type == DEBIT() ? 'Debit' : 'Transfer') . ' ' . $entry->amount . ' to account ' . $account->no }}"
         class="btn btn-{{ !is_null($entry->transaction) ? 'info' : 'primary' }} btn-air-{{ !is_null($entry->transaction) ? 'info' : 'primary' }}  btn-sm p-2 mx-2"
         wire:click="$toggle('toggle_entry_transaction_modal')">
         <i class="{{ !is_null($entry->transaction) ? 'fa fa-undo-alt' : 'far fa-paper-plane' }}"></i>

@@ -33,7 +33,7 @@ class AccountRequest extends FormRequest
     {
         $id = $this->account->id ?? '';
         return [
-            'no' => 'required|unique:accounts,no,' . $id,
+            'no' => 'required|unique:' . config('account.table_prefix', 'account') . '_accounts' . ',no,' . $id,
             'holder_name' => 'required|max:255',
             'holder_email' => 'required|max:255',
             'holder_phone' => 'required|max:255',

@@ -39,6 +39,7 @@ use Adminetic\Account\Http\Livewire\Admin\Journal\PolymorphicJournalPanel;
 use Adminetic\Account\Http\Livewire\Admin\Entry\EntryTransformToTransaction;
 use Adminetic\Account\Http\Livewire\Admin\Journal\JournalApproval;
 use Adminetic\Account\Http\Livewire\Admin\Journal\PolymorphicSpecificLedgerAccountJournalEntry;
+use Adminetic\Account\Http\Livewire\Admin\Report\BalanceReport;
 use Adminetic\Account\Http\Livewire\Admin\Report\CumulativeBalanceReport;
 use Adminetic\Account\Http\Livewire\Admin\Report\ProfitLossReport;
 use Adminetic\Account\Http\Livewire\Admin\Transaction\TransactionApproval;
@@ -167,6 +168,8 @@ class AccountServiceProvider extends ServiceProvider
      */
     protected function registerLivewireComponents()
     {
+        /* Transfer */
+        Livewire::component('admin.transfer.transfer-panel', TransferPanel::class);
         /* Entities */
         Livewire::component('admin.entities.income-expense-subjects', IncomeExpenseSubjects::class);
         Livewire::component('admin.entities.ledger-account', LedgerAccount::class);
@@ -190,6 +193,7 @@ class AccountServiceProvider extends ServiceProvider
         Livewire::component('admin.report.chart-of-account', ChartOfAccount::class);
         Livewire::component('admin.report.ledger-summary', LedgerSummary::class);
         Livewire::component('admin.report.transaction-report', TransactionReport::class);
+        Livewire::component('admin.report.balance-report', BalanceReport::class);
         Livewire::component('admin.report.user-account-audit', UserAccountAudit::class);
         Livewire::component('admin.report.profit-loss-report', ProfitLossReport::class);
         Livewire::component('admin.report.cumulative-balance-report', CumulativeBalanceReport::class);

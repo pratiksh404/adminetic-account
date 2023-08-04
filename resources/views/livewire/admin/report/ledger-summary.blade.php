@@ -89,7 +89,7 @@
                                                                 <tbody>
                                                                     @if ($entries->count() > 0)
                                                                         @php
-                                                                            $balance = 0;
+                                                                            $balance = $entries->first()->balance();
                                                                         @endphp
                                                                         @foreach ($entries as $entry)
                                                                             @php
@@ -159,7 +159,7 @@
                                                                         </td>
                                                                         <td style="padding: 10px 0;text-align: right">
                                                                             <span
-                                                                                style="font-weight: 600;">{{ currency() . ($entries->filter(fn($e) => $e->account_type == CREDIT())->sum('amount') - $entries->filter(fn($e) => $e->account_type == DEBIT())->sum('amount')) }}</span>
+                                                                                style="font-weight: 600;">{{ currency() . $entry->balance() }}</span>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -189,6 +189,11 @@
                     <div class="card">
                         <div class="card-body shadow-lg p-1">
                             <div style="height: 65vh;overflow-y: auto; padding: 10px">
+                                <div class="card">
+                                    <div class="card-body shadow-lg p-1">
+                                        <div id="entry-sparklines-chart"></div>
+                                    </div>
+                                </div>
                                 <div id="filters">
                                     <label>Ledger</label> <br>
                                     <select wire:model.debounce.800ms="ledger_id" class="form-control">
@@ -262,10 +267,14 @@
                                     <select wire:model="journal_id" id="journals" class="form-control">
                                         <option value="">Select ...</option>
                                         @if ($journals->count() > 0)
-                                            @foreach ($journals as $journal)
-                                                <option value="{{ $journal->id }}">
-                                                    #{{ $journal->bill_no }}
-                                                </option>
+                                            @foreach ($journals->groupBy(fn($e) => !is_null($e->journalable_type) ? class_basename($e->journalable_type) : 'Independent') as $journalable_class => $journalables)
+                                                <optgroup label="{{ $journalable_class }}">
+                                                    @foreach ($journalables as $journal)
+                                                        <option value="{{ $journal->id }}">
+                                                            {{ !is_null($journal->journalable) ? $journal->journalable->representing_name() : '#' . $journal->id }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
                                             @endforeach
                                         @endif
                                     </select>
@@ -308,6 +317,55 @@
                     $('#interval').on('cancel.daterangepicker', function(ev, picker) {
                         $(this).val('');
                     });
+
+                });
+                window.addEventListener('entry_sparklines_chart', event => {
+                    $('#entry-sparklines-chart').empty();
+                    var entrySparklinesChartOptions = {
+                        series: [{
+                            data: event.detail
+                        }],
+                        chart: {
+                            type: 'area',
+                            height: 160,
+                            sparkline: {
+                                enabled: true
+                            },
+                        },
+                        stroke: {
+                            curve: 'straight'
+                        },
+                        fill: {
+                            opacity: 0.3
+                        },
+                        xaxis: {
+                            crosshairs: {
+                                width: 1
+                            },
+                        },
+                        yaxis: {
+                            min: 0
+                        },
+                        title: {
+                            text: '{{ currency() }}' + event.detail.at(-1),
+                            offsetX: 0,
+                            style: {
+                                fontSize: '24px',
+                            }
+                        },
+                        subtitle: {
+                            text: 'Balance',
+                            offsetX: 0,
+                            style: {
+                                fontSize: '14px',
+                            }
+                        }
+                    };
+
+                    var entrySparklinesChart = new ApexCharts(document.querySelector(
+                            "#entry-sparklines-chart"),
+                        entrySparklinesChartOptions);
+                    entrySparklinesChart.render();
                 });
             });
         </script>
