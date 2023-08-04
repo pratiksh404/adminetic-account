@@ -60,8 +60,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## Screenshots
 
-![Dashboard](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/dashboard.jpg)
-
 ![Module 1](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/1.jpg)
 ![Module 2](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/2.jpg)
 ![Module 3](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/3.jpg)
