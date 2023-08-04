@@ -1,24 +1,35 @@
-# Very short description of the package
+# Account Module for Adminetic Admin Panel
+
+![Adminetic Account Module](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/banner.jpg)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/adminetic/account.svg?style=flat-square)](https://packagist.org/packages/adminetic/account)
-[![Total Downloads](https://img.shields.io/packagist/dt/adminetic/account.svg?style=flat-square)](https://packagist.org/packages/adminetic/account)
-![GitHub Actions](https://github.com/adminetic/account/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+[![Stars](https://img.shields.io/github/stars/pratiksh404/adminetic-account)](https://github.com/pratiksh404/adminetic-account/stargazers) 
+account module for Adminetic Admin Panel
 
-## Installation
+For detailed documentaion visit [Adminetic account Module Documentation](https://app.gitbook.com/@pratikdai404/s/adminetic/addons/account)
 
-You can install the package via composer:
+#### Contains : -
 
-```bash
-composer require adminetic/account
-```
+- Ledger Module
+- Fiscal Module
+- Transfer Module
+- Account Module
+- Ledger Accounts Module
+- Journal Module
+- Morphable Journal Module
+- Transaction Module
+- Morphable Entries Module
+- Entries Module
+- Chart Of Accounts
+- Ledger Summary
+- Transaction Report
+- Balance Report
+- User Account Audit
+- Profit Loss Report
+- Cumulative Balance Report
 
-## Usage
 
-```php
-// Usage description here
-```
 
 ### Testing
 
@@ -40,13 +51,21 @@ If you discover any security related issues, please email pratikdai404@gmail.com
 
 ## Credits
 
--   [Pratik Shrestha](https://github.com/adminetic)
--   [All Contributors](../../contributors)
+- [Pratik Shrestha](https://github.com/adminetic)
+- [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-## Laravel Package Boilerplate
+## Screenshots
 
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
+![Dashboard](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/dashboard.jpg)
+
+![Module 1](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/1.jpg)
+![Module 2](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/2.jpg)
+![Module 3](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/3.jpg)
+![Module 4](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/4.jpg)
+![Module 5](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/5.jpg)
+![Module 6](https://github.com/pratiksh404/adminetic-account/blob/main/screenshots/6.jpg)
+
